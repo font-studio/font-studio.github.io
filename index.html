@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FontStudio: Shape-Adaptive Diffusion Model for Coherent and Consistent Font Effect Generation</title>
+</head>
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script> -->
+  <!-- <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script> -->
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/img/COLE.jpg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+<style>
+  .publication-title {
+    font-family: "textsc "
+  }
+  video {
+    outline: none;
+    border: none;
+    box-shadow: none;
+  }
+  .image_wrapper {
+    position: relative;
+    /* width: 226px;
+    height: 226px; */
+  }
+
+  .image_container {
+    border-radius: 10px; /*设置图片的圆角，可以根据你的需求调整这个值*/
+    /*margin: 10px; !* 在图片的外部元素上设置间距 *!*/
+    overflow: hidden; /* 为了保持图片的圆角效果 */
+    position: relative;
+    /* width: 100%; */
+    padding-bottom: 100%;
+  }
+
+  .image_container img {
+    position: absolute;
+    height: auto;
+    object-fit: cover; /* 这会使图片保持原始比例，但仍然填充其容器 */
+    object-position: center; /* 新增加的代码，让图片居中 */
+  }
+
+  .caption {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    font-family: 'Comic Sans MS', 'Verdana', 'Tahoma', sans-serif;
+    text-align: center; /* 让文本在其容器中水平居中 */
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .image_container:hover .caption {
+    opacity: 1;
+  }
+
+
+
+  .column.is-2.has-text-centered img.interpolation-image {
+
+    object-fit: cover;
+    border-radius: 10px;
+    transition: opacity 0.5s ease;
+    object-position: center; /* 新增加的代码，让图片居中 */
+  }
+
+  .column.is-2.has-text-centered:hover img.interpolation-image {
+    opacity: 0.5;
+  }
+
+  .column.is-2.has-text-centered .caption {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    font-family: 'Comic Sans MS', 'Verdana', 'Tahoma', sans-serif;
+    text-align: center; /* 让文本在其容器中水平居中 */
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .column.is-2.has-text-centered:hover .caption {
+    opacity: 1;
+  }
+
+  .columns.is-centered img {
+    margin-bottom: 20px; /* 或者你想要的任何值 */
+  }
+
+
+  .section { margin: 3px; padding: 5px; }
+</style>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <style>
+            .title {
+              font-size: 50px; /* 调大字体大小 */
+            }
+          </style>
+           <h1 class="title is-1">
+            FontStudio: Shape-Adaptive Diffusion Model for Coherent and Consistent <br> Font Effect Generation
+          </h1>          
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+<!--              作者排序-->
+              <span>Xinzhi Mu</span><sup></sup>&nbsp&nbsp&nbsp</span>
+              <span>Li Chen</span><sup></sup>&nbsp&nbsp&nbsp</span>
+              <span>Bohan Chen</span><sup></sup>&nbsp&nbsp&nbsp</span>
+              <span>Shuyang Gu</span><sup></sup>&nbsp&nbsp&nbsp</span>
+              <span>Jianmin Bao</span><sup></sup>&nbsp&nbsp&nbsp</span>
+              <span>Dong Chen</span><sup></sup>&nbsp&nbsp&nbsp</span>
+              <span class="author-block">
+                <a href="https://sites.google.com/a/usc.edu/jili/">Ji Li</a><sup></sup>&nbsp&nbsp&nbsp
+              </span>
+              <span class="author-block">
+                <a href="https://www.microsoft.com/en-us/research/people/yuyua/">Yuhui Yuan</a><sup></sup>&nbsp&nbsp&nbsp</span>
+              </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup> </sup>Microsoft Research Asia&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+            <span class="author-block"><sup> </sup>University of Liverpool</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Full-res Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://docs.google.com/spreadsheets/d/1dHq-Jwa_o1BH8zLDTHa4JcyX6arXaGhE7pXKZIWebdk/edit?usp=sharing"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>GenerativeFont Benchmark</span>
+                </a>
+              </span>
+              
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <div style="display: flex;justify-content: center;">
+          <img src="./static_lr/img_new/pipeline/teaser_full.jpg" alt="pipeline" style="width: 100%;">       
+        </div>
+        <br>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified" style="font-family: 'Roboto Slab', sans-serif; font-size: 16px; background-color: #f0f0f0; border-radius: 15px; padding: 20px; margin-top: 20px; margin-bottom: 20px;">
+          Recently, the application of modern diffusion-based text-to-image generation models for creating artistic fonts, traditionally the domain of professional designers, has garnered significant interest. 
+          Diverging from the majority of existing studies that concentrate on generating artistic typography, our research aims to tackle a novel and more demanding challenge: the generation of text effects for multilingual fonts. 
+          This task essentially requires generating coherent and consistent visual content within the confines of a font-shaped canvas, as opposed to a traditional rectangular canvas. To address this task, we introduce a novel shape-adaptive 
+          diffusion model capable of interpreting the given shape and strategically planning pixel distributions within the irregular canvas. To achieve this, we curate a high-quality shape-adaptive image-text dataset and incorporate
+           the segmentation mask as a visual condition to steer the image generation process within the irregular-canvas. This approach enables the traditionally rectangle canvas-based diffusion model to produce the desired concepts 
+           in accordance with the provided geometric shapes. Second, to maintain consistency across multiple letters, we also present a training-free, shape-adaptive effect transfer method for transferring textures from a generated 
+           reference letter to others. The key insights are building a font effect noise prior and propagating the font effect information in a concatenated latent space.
+          The efficacy of our FontStudio system is confirmed through user preference studies, which show a marked preference (78% win-rates on aesthetics) for our system even when compared to the latest unrivaled commercial product, Adobe Firefly.
+          </p>
+        </div>
+      </div>
+    </div>    
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-four-fifths">
+      <h2 class="title is-3">Method Overview</h2>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/pipeline/Pipeline.jpg" alt="pipeline" style="width: 100%;">
+      </div>
+      <div>
+        <img src="./static_lr/img_new/pipeline/SGM_SRM.jpg" alt="pipeline" style="width: 100%;">      
+      </div>
+    </div>
+  </div>
+
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-four-fifths">
+      <h2 class="title is-3">Results  - English</h2>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/11_a_red_fox_prowling_through_a_s.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/15_a_butterfly_flitting_among_wil.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/22_sushi.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/27_ice_cream.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/29_juice_splash.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/37_a_plate_of_fluffy_pancakes,_dr.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/41_broken_glass.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/44_metallic.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/55_red_and_green_holiday_ornament.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/64_leafy_pothos.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/72_botanical_hand_drawn_illustrat.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/78_a_coral_reef,_alive_with_color.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/80_the_majestic_sight_of_a_waterf.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/84_lighthouse.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/89_room.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/100_a_detailed_drawing_of_a_succul.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <br>
+<br>
+      <h2 class="title is-3">Results - Korean</h2>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/103_a_colorful_parrot,_portrayed_i.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/104_juice_splash.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/105_fresh_mozzarella_and_tomato_sa.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/106_a_berry-infused_iced_tea,_swee.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/107_marble_granite.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/109_luminous_moonstones,_their_sur.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/111_a_field_of_wildflowers.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/112_a_coral_reef,_alive_with_color.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/113_room.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/115_art_nouveau_painting_of_a_fema.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <br>
+<br>
+      <h2 class="title is-3">Results - Japanese</h2>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/117_a_spotted_deer_grazing_in_a_me.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/119_croissant.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/121_a_refreshing_elderflower_sprit.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/122_sequins.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/124_glossy_cherry_wood,_its_surfac.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/125_decay.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/128_garden.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/129_a_starlit_sky_above_a_quiet,_s.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/130_a_detailed_drawing_of_a_succul.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <br>
+<br>
+      <h2 class="title is-3">Results - Chinese</h2>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/132_a_butterfly_flitting_among_wil.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/134_icecream.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/135_smoked_salmon_atop_a_creamy_di.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/136_a_charcuterie_board,_featuring.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/137_broken_glass.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/138_holographic_dripping_color.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/139_glistening_fish_scales,_reflec.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/140_lava.png" alt="pipeline" style="width: 100%;">
+      </div>
+      <div style="display: flex;justify-content: center;">
+        <img src="./static_lr/img_new/images/144_a_night_sky_ablaze_with_stars.png" alt="pipeline" style="width: 100%;">
+      </div>
+    </div>
+  </div>
+  
+
+</section>
+<br>
+<br>
+
+<!-- <section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>
+    </code></pre>
+  </div>
+</section> -->
+
+
+<section class="section" id="Acknowledgements">
+  <div class="container is-max-desktop content">
+    <h2 class="title">Acknowledgements</h2>
+    <br>
+    Website adapted from the following <a href="https://nerfies.github.io/">template</a>.
+  </div>
+</section>
+
+</body>
+</html>
